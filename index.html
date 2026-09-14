@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mindscope · Student Mental Health Estimator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="page">
+
+  <!-- LEFT / INTRO PANEL -->
+  <aside class="intro">
+    <div class="intro__inner">
+      <p class="intro__mark">Mindscope</p>
+      <h1 class="intro__title">A quiet read on a<br>noisy habit.</h1>
+      <p class="intro__body">
+        Screen time, sleep, study, and stress rarely move alone — they pull on each other.
+        Answer a few honest questions about your week, and the model will estimate
+        where your mental health score is likely sitting right now.
+      </p>
+
+      <svg class="intro__wave" viewBox="0 0 320 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path id="wavePath" d="M0 45 C 30 10, 60 80, 90 45 S 150 10, 180 45 S 240 80, 270 45 S 310 20, 320 45"
+              stroke="var(--teal)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+
+      <div class="intro__note">
+        <span class="intro__note-dot"></span>
+        <p>This is a statistical estimate from a trained model — not a diagnosis. If you're struggling, please talk to someone you trust.</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT / FORM + RESULT PANEL -->
+  <main class="panel">
+    <div class="panel__inner" id="panelInner">
+
+      <!-- FORM VIEW -->
+      <form id="predictForm" class="form" novalidate>
+
+        <div class="form__head">
+          <h2>Tell us about your week</h2>
+          <p>Every field maps directly to what the model was trained on.</p>
+        </div>
+
+        <!-- Section: About you -->
+        <section class="fieldset">
+          <h3 class="fieldset__title">About you</h3>
+          <div class="grid grid--3">
+            <div class="field">
+              <label for="age">Age</label>
+              <input type="number" id="age" name="age" min="10" max="100" placeholder="e.g. 21" required>
+              <span class="field__hint">10 – 100</span>
+              <span class="field__error" data-error-for="age"></span>
+            </div>
+            <div class="field">
+              <label for="gender">Gender</label>
+              <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+              <span class="field__error" data-error-for="gender"></span>
+            </div>
+            <div class="field">
+              <label for="country">Country</label>
+              <input type="text" id="country" name="country" placeholder="e.g. India" required>
+              <span class="field__error" data-error-for="country"></span>
+            </div>
+          </div>
+
+          <div class="grid grid--2">
+            <div class="field">
+              <label for="academic_level">Academic level</label>
+              <select id="academic_level" name="academic_level" required>
+                <option value="" disabled selected>Select</option>
+                <option value="High School">High School</option>
+                <option value="Undergraduate">Undergraduate</option>
+                <option value="Graduate">Graduate</option>
+              </select>
+              <span class="field__error" data-error-for="academic_level"></span>
+            </div>
+            <div class="field">
+              <label for="stress_level">Current stress level</label>
+              <select id="stress_level" name="stress_level" required>
+                <option value="" disabled selected>Select</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Very High">Very High</option>
+              </select>
+              <span class="field__error" data-error-for="stress_level"></span>
+            </div>
+          </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Section: Digital habits -->
+        <section class="fieldset">
+          <h3 class="fieldset__title">Digital habits</h3>
+          <div class="grid grid--2">
+            <div class="field">
+              <label for="most_used_platform">Most used platform</label>
+              <select id="most_used_platform" name="most_used_platform" required>
+                <option value="" disabled selected>Select</option>
+                <option>Facebook</option>
+                <option>LinkedIn</option>
+                <option>Instagram</option>
+                <option>Snapchat</option>
+                <option>Twitter</option>
+                <option>YouTube</option>
+                <option>TikTok</option>
+                <option>LINE</option>
+                <option>KakaoTalk</option>
+                <option>VKontakte</option>
+                <option>WhatsApp</option>
+                <option>WeChat</option>
+              </select>
+              <span class="field__error" data-error-for="most_used_platform"></span>
+            </div>
+            <div class="field">
+              <label for="purpose_of_use">Main purpose of use</label>
+              <select id="purpose_of_use" name="purpose_of_use" required>
+                <option value="" disabled selected>Select</option>
+                <option>Networking</option>
+                <option>Education</option>
+                <option>Entertainment</option>
+                <option>News</option>
+              </select>
+              <span class="field__error" data-error-for="purpose_of_use"></span>
+            </div>
+          </div>
+
+          <div class="grid grid--2">
+            <div class="field">
+              <label for="avg_daily_usage_hours">Average daily usage <span>(hours)</span></label>
+              <input type="number" id="avg_daily_usage_hours" name="avg_daily_usage_hours" min="0" max="24" step="0.1" placeholder="e.g. 4.5" required>
+              <span class="field__hint">0 – 24</span>
+              <span class="field__error" data-error-for="avg_daily_usage_hours"></span>
+            </div>
+            <div class="field">
+              <label for="daily_unlocks">Daily phone unlocks</label>
+              <input type="number" id="daily_unlocks" name="daily_unlocks" min="0" step="1" placeholder="e.g. 60" required>
+              <span class="field__hint">0 or more</span>
+              <span class="field__error" data-error-for="daily_unlocks"></span>
+            </div>
+          </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Section: Wellbeing habits -->
+        <section class="fieldset">
+          <h3 class="fieldset__title">Wellbeing habits</h3>
+          <div class="grid grid--3">
+            <div class="field">
+              <label for="study_hours">Study hours <span>/ day</span></label>
+              <input type="number" id="study_hours" name="study_hours" min="0" max="24" step="0.1" placeholder="e.g. 3" required>
+              <span class="field__error" data-error-for="study_hours"></span>
+            </div>
+            <div class="field">
+              <label for="physical_activity_hours">Physical activity <span>/ day</span></label>
+              <input type="number" id="physical_activity_hours" name="physical_activity_hours" min="0" max="2" step="0.1" placeholder="e.g. 0.5" required>
+              <span class="field__hint">0 – 2</span>
+              <span class="field__error" data-error-for="physical_activity_hours"></span>
+            </div>
+            <div class="field">
+              <label for="sleep_hours_per_night">Sleep <span>/ night</span></label>
+              <input type="number" id="sleep_hours_per_night" name="sleep_hours_per_night" min="0" max="24" step="0.1" placeholder="e.g. 7" required>
+              <span class="field__error" data-error-for="sleep_hours_per_night"></span>
+            </div>
+          </div>
+        </section>
+
+        <div class="form__footer">
+          <p id="formError" class="form__error" role="alert" hidden></p>
+          <button type="submit" id="submitBtn" class="btn">
+            <span class="btn__label">Estimate my score</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+      </form>
+
+      <!-- RESULT VIEW -->
+      <section id="resultView" class="result" hidden aria-live="polite">
+        <p class="result__eyebrow">Predicted mental health score</p>
+        <p class="result__score"><span id="resultNumber">0.0</span><span class="result__scale">/10</span></p>
+        <p class="result__band" id="resultBand">—</p>
+
+        <div class="result__gauge">
+          <div class="result__gauge-track">
+            <div class="result__gauge-fill" id="resultGaugeFill"></div>
+          </div>
+          <div class="result__gauge-labels">
+            <span>Lower</span>
+            <span>Higher</span>
+          </div>
+        </div>
+
+        <p class="result__note" id="resultNote">
+          Remember — this number reflects patterns in the data you entered, not a clinical judgement.
+        </p>
+
+        <button type="button" id="recalculateBtn" class="btn btn--ghost">Run another estimate</button>
+      </section>
+
+    </div>
+  </main>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
